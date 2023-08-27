@@ -52,8 +52,6 @@ def read_highest_score():
     return 0
 
 
-
-
 pygame.init()
 screen = pygame.display.set_mode((798,398))
 pygame.display.set_caption('runner')
@@ -87,9 +85,10 @@ welcome_text_rect = welcome_text_surf.get_rect(center = (399, 20))
 text_rect = text_surface.get_rect(center = (399,350))
 
 enemy_rect_list = []
+
 # variables 
 gravity = 0
-game_activ = 0
+game_activ = 2
 score = 0
 jump = 2
 highest_score = read_highest_score()
@@ -111,6 +110,7 @@ while True:
                 if event.key == pygame.K_SPACE and  jump>0:
                     jump -= 1 
                     gravity = -15
+                    
         #end/start screen    
         if game_activ == 0 or game_activ == 2:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE: 
@@ -137,22 +137,16 @@ while True:
         player_animation()
         screen.blit(player_surf, draw_pos)
         
-        
-        pygame.draw.rect(screen, (255, 0, 0), player_rect, 2)
-        
         # enemy movement
         enemy_rect_list = enemy_movement(enemy_rect_list)
         
         # socre
         update_score(1, enemy_rect_list,player_rect)
-        screen.blit(text_font.render(f'score {score}', False, "black"), (359, 0))
+        screen.blit(text_font.render(f'score {score}', False, "black"), (359, 10))
           
         #checking lose condition 
         game_activ = collisions(player_rect, enemy_rect_list)
-            
-       
-
-        
+                   
     # start screen    
     if game_activ == 0:
         screen.fill('green')
@@ -162,9 +156,9 @@ while True:
         
     # end screen
     elif game_activ == 2:
-        screen.fill("#337CCF")
-        screen.blit(text_font.render(f'highest score   {highest_score}', True, "black"), (280, 100))
-        screen.blit(text_font.render(f'current score   {score}', False, "black"), (290, 220))
+        screen.fill("#1D5B79")
+        screen.blit(text_font.render(f'highest score   {highest_score}', True, "#FE0000"), (280, 100))
+        screen.blit(text_font.render(f'current score   {score}', False, "#FE0000"), (290, 220))
         enemy_rect_list.clear()
         
         
