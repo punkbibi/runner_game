@@ -73,8 +73,7 @@ player_surf = player_walk[player_index]
 
 ground_enemy_surf = pygame.image.load('death.png').convert_alpha()
 
-ufo_surf = pygame.image.load('ufo.png').convert_alpha()
-ufo_surf = pygame.transform.scale(ufo_surf,(45,45))
+ufo_surf = pygame.image.load('bird_2.png').convert_alpha()
 welcome_text_surf = text_font.render('welcome', True, 'black')
 text_surface = pygame.transform.scale2x(text_font.render('press    space    to    start', True,'black'))
 
@@ -132,7 +131,6 @@ while True:
             jump = 2 
         
         screen.blit(ground_surf,(0,0))
-        
         draw_pos = player_rect
         player_animation()
         screen.blit(player_surf, draw_pos)
