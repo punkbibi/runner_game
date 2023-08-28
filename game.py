@@ -9,7 +9,7 @@ def enemy_movement(enemy_list):
         for enemy_rect in enemy_list:
             enemy_rect.x -= 5
             if enemy_rect.bottom == 335: screen.blit(ground_enemy_surf,enemy_rect)
-            else: screen.blit(ufo_surf, enemy_rect)
+            else: screen.blit(flying_enemy_surf, enemy_rect)
         return  [enemy for enemy in enemy_list if enemy.right > -100]
     else: return []
 
@@ -73,7 +73,7 @@ player_surf = player_walk[player_index]
 
 ground_enemy_surf = pygame.image.load('death.png').convert_alpha()
 
-ufo_surf = pygame.image.load('bird_2.png').convert_alpha()
+flying_enemy_surf = pygame.image.load('bird_2.png').convert_alpha()
 welcome_text_surf = text_font.render('welcome', True, 'black')
 text_surface = pygame.transform.scale2x(text_font.render('press    space    to    start', True,'black'))
 
@@ -120,7 +120,7 @@ while True:
             if random.randint(0,1):
                 enemy_rect_list.append(ground_enemy_surf.get_rect(midbottom= (random.randint(900,1000),335)))
             else:
-                enemy_rect_list.append(ufo_surf.get_rect(midbottom= (random.randint(900,1000),random.randint(150,330))))
+                enemy_rect_list.append(flying_enemy_surf.get_rect(midbottom= (random.randint(900,1000),random.randint(150,330))))
                 
     # main event
     if game_activ == 1:             
