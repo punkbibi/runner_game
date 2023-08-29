@@ -58,7 +58,10 @@ def read_highest_score():
 
 pygame.init()
 screen = pygame.display.set_mode((798,398))
-pygame.display.set_caption('runner')
+pygame.display.set_caption('runner pppy')
+# icon
+icon_surf = pygame.image.load("pekingese.png")
+pygame.display.set_icon(icon_surf)
 
 
 clock = pygame.time.Clock()
