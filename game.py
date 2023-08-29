@@ -32,7 +32,7 @@ def update_score(added_score, enemy_list, player):
         if abs(player.centerx - enemy.centerx) <= 2:
             score += added_score
             if score % 10 == 0:  
-                enemy_speed_factor += 2
+                enemy_speed_factor += 0.2
 
             
 def player_animation():
