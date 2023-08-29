@@ -60,28 +60,28 @@ pygame.init()
 screen = pygame.display.set_mode((798,398))
 pygame.display.set_caption('runner pppy')
 # icon
-icon_surf = pygame.image.load("pekingese.png")
+icon_surf = pygame.image.load("imgs/pekingese.png")
 pygame.display.set_icon(icon_surf)
 
 
 clock = pygame.time.Clock()
-text_font = pygame.font.Font('ARCADECLASSIC.TTF', 25)
+text_font = pygame.font.Font('font/ARCADECLASSIC.TTF', 25)
 
 
 # surfaces
-ground_surf = pygame.image.load('ground.jpg').convert()
+ground_surf = pygame.image.load('imgs/ground.jpg').convert()
 
-player_walk_1 = pygame.image.load('dog_1.png').convert_alpha()
-player_walk_2 = pygame.image.load('dog_2.png').convert_alpha()
+player_walk_1 = pygame.image.load('imgs/dog_1.png').convert_alpha()
+player_walk_2 = pygame.image.load('imgs/dog_2.png').convert_alpha()
 player_walk = [player_walk_1,player_walk_2]
-jump_surf = pygame.image.load('jump.png').convert_alpha()
+jump_surf = pygame.image.load('imgs/jump.png').convert_alpha()
 player_index = 0
 player_surf = player_walk[player_index]
 
-ground_enemy_surf = pygame.image.load('death.png').convert_alpha()
+ground_enemy_surf = pygame.image.load('imgs/death.png').convert_alpha()
 
-bird_1 = pygame.image.load('bird_1.png').convert_alpha()
-bird_2 = pygame.image.load('bird_2.png').convert_alpha()
+bird_1 = pygame.image.load('imgs/bird_1.png').convert_alpha()
+bird_2 = pygame.image.load('imgs/bird_2.png').convert_alpha()
 bird_list = [bird_1, bird_2]
 bird_index = 0
 bird_surf = bird_list[bird_index]
