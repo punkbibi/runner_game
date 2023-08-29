@@ -5,19 +5,21 @@ import os
 
 
 def enemy_movement(enemy_list):
+    global enemy_speed_factor
     if enemy_list:
         for enemy_rect in enemy_list:
-            enemy_rect.x -= 5
+            enemy_rect.x -= 5 * enemy_speed_factor
             if enemy_rect.bottom == 335: screen.blit(ground_enemy_surf,enemy_rect)
-            else: screen.blit(flying_enemy_surf, enemy_rect)
+            else: screen.blit(bird_surf, enemy_rect)
         return  [enemy for enemy in enemy_list if enemy.right > -100]
     else: return []
 
 def collisions(player, enemies):
-    global score, highest_score
+    global score, highest_score, enemy_speed_factor
     if enemies:
         for enemy_rect in enemies:
             if player.colliderect(enemy_rect):
+                enemy_speed_factor = 1
                 if score > highest_score:
                     highest_score = score
                     save_highest_score(highest_score)  
@@ -25,10 +27,13 @@ def collisions(player, enemies):
     return 1
 
 def update_score(added_score, enemy_list, player):
-    global score
+    global score, enemy_speed_factor
     for enemy in enemy_list:
         if abs(player.centerx - enemy.centerx) <= 2:
             score += added_score
+            if score % 10 == 0:  
+                enemy_speed_factor += 2
+
             
 def player_animation():
     global player_surf, player_index, draw_pos, player_rect
@@ -67,13 +72,18 @@ ground_surf = pygame.image.load('ground.jpg').convert()
 player_walk_1 = pygame.image.load('dog_1.png').convert_alpha()
 player_walk_2 = pygame.image.load('dog_2.png').convert_alpha()
 player_walk = [player_walk_1,player_walk_2]
-player_index = 0
 jump_surf = pygame.image.load('jump.png').convert_alpha()
+player_index = 0
 player_surf = player_walk[player_index]
 
 ground_enemy_surf = pygame.image.load('death.png').convert_alpha()
 
-flying_enemy_surf = pygame.image.load('bird_2.png').convert_alpha()
+bird_1 = pygame.image.load('bird_1.png').convert_alpha()
+bird_2 = pygame.image.load('bird_2.png').convert_alpha()
+bird_list = [bird_1, bird_2]
+bird_index = 0
+bird_surf = bird_list[bird_index]
+
 welcome_text_surf = text_font.render('welcome', True, 'black')
 text_surface = pygame.transform.scale2x(text_font.render('press    space    to    start', True,'black'))
 
@@ -85,24 +95,29 @@ text_rect = text_surface.get_rect(center = (399,350))
 
 enemy_rect_list = []
 
-# variables 
+# variables
+base_speed = 900
+enemy_speed_factor = 1
 gravity = 0
-game_activ = 2
+game_activ = 0
 score = 0
 jump = 2
 highest_score = read_highest_score()
 
-# timer
+# timers
 enemy_timer = pygame.USEREVENT + 1
-pygame.time.set_timer(enemy_timer, 900)
+pygame.time.set_timer(enemy_timer, base_speed)
 
+bird_animation_timer = pygame.USEREVENT + 2
+pygame.time.set_timer(bird_animation_timer, 200)
 
 while True:
     
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            
+        if event.type == pygame.QUIT: pygame.quit()
+        if event.type == pygame.KEYDOWN: 
+            if event.key == pygame.K_ESCAPE:pygame.quit()
+             
         # main event
         if game_activ == 1:
             if event.type == pygame.KEYDOWN:
@@ -110,18 +125,23 @@ while True:
                     jump -= 1 
                     gravity = -15
                     
+            if event.type == enemy_timer:
+                if random.randint(0,1):
+                    enemy_rect_list.append(ground_enemy_surf.get_rect(midbottom= (random.randint(900,1000),335)))
+                else:
+                    enemy_rect_list.append(bird_surf.get_rect(midbottom= (random.randint(900,1000),random.randint(150,330))))
+            if event.type == bird_animation_timer:
+                if bird_index == 0: bird_index = 1
+                else: bird_index = 0
+                bird_surf = bird_list[bird_index]
+                
         #end/start screen    
         if game_activ == 0 or game_activ == 2:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE: 
                 score = 0
                 game_activ = 1
                 
-        if event.type == enemy_timer:
-            if random.randint(0,1):
-                enemy_rect_list.append(ground_enemy_surf.get_rect(midbottom= (random.randint(900,1000),335)))
-            else:
-                enemy_rect_list.append(flying_enemy_surf.get_rect(midbottom= (random.randint(900,1000),random.randint(150,330))))
-                
+                        
     # main event
     if game_activ == 1:             
         gravity += 1
@@ -141,7 +161,7 @@ while True:
         # socre
         update_score(1, enemy_rect_list,player_rect)
         screen.blit(text_font.render(f'score {score}', False, "black"), (359, 10))
-          
+        
         #checking lose condition 
         game_activ = collisions(player_rect, enemy_rect_list)
                    
