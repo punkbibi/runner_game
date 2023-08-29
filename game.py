@@ -34,7 +34,6 @@ def update_score(added_score, enemy_list, player):
             if score % 10 == 0:  
                 enemy_speed_factor += 0.2
 
-            
 def player_animation():
     global player_surf, player_index, draw_pos, player_rect
     if player_rect.bottom <= 312:
